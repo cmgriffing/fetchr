@@ -118,7 +118,13 @@ var OP_READ = 'read',
                         meta = meta || {};
                         var responseObj = {};
                         responseObj[DEFAULT_GUID] = {data: data};
-                        res.status(meta.statusCode || 200).json(responseObj);
+                        if(req.headers['content-type'] === 'application/x-www-form-urlencoded') {
+                            //Here the urlencoded form might require a redirectUrl by convention
+                                //but just redirecting to the referrer url might also suffice
+                            res.redirect('back');
+                        } else {
+                            res.status(meta.statusCode || 200).json(responseObj);
+                        }
                     }
                 };
             }
